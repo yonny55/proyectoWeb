@@ -10,10 +10,10 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>pe.com.entelgy.examen</groupId>
-	<artifactId>examen-employee</artifactId>
+	<artifactId>servicio-dragon-ball</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>examen-employee</name>
+	<name>servicio-dragon-ball</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>

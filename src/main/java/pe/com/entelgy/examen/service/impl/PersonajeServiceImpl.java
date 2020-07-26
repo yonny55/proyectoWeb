@@ -7,38 +7,37 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import pe.com.entelgy.examen.client.APIConfiguration;
-import pe.com.entelgy.examen.client.model.Employee;
-import pe.com.entelgy.examen.client.service.EmployeeInterface;
-import pe.com.entelgy.examen.model.EmployeeV1;
-import pe.com.entelgy.examen.service.dummy.DummyEmployees;
+import pe.com.entelgy.examen.client.model.Personaje;
+import pe.com.entelgy.examen.client.service.PersonajeService;
+import pe.com.entelgy.examen.model.PersonajeRestructurado;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 @Service
-public class EmployeeServiceImpl implements APIConfiguration {
+public class PersonajeServiceImpl implements APIConfiguration {
 	
-	private EmployeeInterface employeeService;
+	private PersonajeService personajeService;
 	
 	// Constructor
-	public EmployeeServiceImpl() {
+	public PersonajeServiceImpl() {
 		Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(API_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 		
-		this.employeeService = retrofit.create(EmployeeInterface.class);
+		this.personajeService = retrofit.create(PersonajeService.class);
 	}
 
 	// Consumo de servicio restful
-	public List<EmployeeV1> getAllEmployeesV1() {
-		Call<List<Employee>> retrofiCall = this.employeeService.getEmployees();
-		List<EmployeeV1> employeesV1 = null; // respuesta a devolver
+	public List<PersonajeRestructurado> getPersonajes() {
+		Call<List<Personaje>> retrofiCall = this.personajeService.getEmployees();
+		List<PersonajeRestructurado> personajesV1 = null; // respuesta a devolver
 		
 		try {
 			// Ejecutamos la llamada
-			Response<List<Employee>> response = retrofiCall.execute();
+			Response<List<Personaje>> response = retrofiCall.execute();
 			
 			// Verificamos si es exitosa la respuesta
 			if(!response.isSuccessful()) {
@@ -47,20 +46,19 @@ public class EmployeeServiceImpl implements APIConfiguration {
 			}
 			
 			// Obtenemos respuesta de la llamada al http://dummy.restapiexample.com/....
-			List<Employee> employees = response.body();
+			List<Personaje> personajes = response.body();
 			
 			// Preparamos para transformar la data de Employee a EmployeeV1
-			employeesV1 
-				= employees
+			 
+			personajesV1	= personajes
 					.stream()
-					.map(e -> new EmployeeV1(e.getEmployee_id(), e.getEmployee_name()))
+					.map(e -> new PersonajeRestructurado(e.getSpecies(), e.getOriginPlanet(), e.getName()))
 					.collect(Collectors.toList());
 		} catch(IOException ex) {
 			System.err.println(ex.getMessage());
-			employeesV1 = DummyEmployees.getAllEmployeesV1();
 		}
         
-		return employeesV1;
+		return personajesV1;
 	}
 
 }

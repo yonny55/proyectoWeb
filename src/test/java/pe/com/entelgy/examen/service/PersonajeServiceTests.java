@@ -1,5 +1,6 @@
 package pe.com.entelgy.examen.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.List;
@@ -16,27 +17,29 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import pe.com.entelgy.examen.ExamenEmployeeApplication;
-import pe.com.entelgy.examen.model.EmployeeV1;
-import pe.com.entelgy.examen.service.impl.EmployeeServiceImpl;
+import pe.com.entelgy.examen.ExamenPersonajeApplication;
+import pe.com.entelgy.examen.model.PersonajeRestructurado;
+import pe.com.entelgy.examen.service.impl.PersonajeServiceImpl;
 
 // Refactorizable en abstract class
 @ExtendWith(SpringExtension.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = { ExamenEmployeeApplication.class })
+@ContextConfiguration(classes = { ExamenPersonajeApplication.class })
 
 // Por clase
 @TestInstance(Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class EmployeeServiceTests {
+public class PersonajeServiceTests {
 	
 	@InjectMocks
-	private EmployeeServiceImpl employeeService;
+	private PersonajeServiceImpl personajeService;
 
 	@Test
 	@Order(1)
-	public void getEmployess() {
-		List<EmployeeV1> employees = employeeService.getAllEmployeesV1();
-		assertNotNull(employees);
+	public void getPersonajes() {
+		List<PersonajeRestructurado> personajes = personajeService.getPersonajes();
+		
+		assertNotNull(personajes);
+		assertEquals(22, personajes.size());
 	}
 }
